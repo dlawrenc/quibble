@@ -1,1 +1,89 @@
 #!/bin/bash
+
+# Script for running the Quibble test suite. When run without any paramaters, the script will
+# run every test suite and report the results to the terminal and a generate a report file in the
+# "results" directory.
+#
+# When given the name of a test suite directory, the script will run every test it can find in the
+# directory and generate a report. This script can also be used to run a single test.
+#
+# Example usage:   run-testsuite (runs every testsuite)
+#                  run-testsuite testsuite-dir (runs one testsuite)
+#                  run-testsuite test (runs one test)
+#
+# Exit codes:
+#
+# 0 - if all the tests run by the script pass
+# 1 - if one or more of the tests run by the script fail
+# 2 - if the script has some internal error or is supplied with invalid parameters
+
+if [ $# -gt 1 ]; then
+    echo "Usage: run-testsuite       (runs every testsuite)" >&2
+    echo "       run-testsuite dir   (runs one testsuite)" >&2
+    echo "       run-testuite test   (runs one test)" >&2
+    exit 2
+fi
+
+results="$(dirname $0)/results"
+export CLASSPATH="../$(dirname $0)/out/production/quibble.git"
+
+if [[ ! -d "$results" ]]; then
+    mkdir "$results"
+fi
+
+report_dir="report-$(date +%Y-%m-%d-%H%M%S)"
+report="$results/$report_dir"
+touch "$report"
+
+echo "---------- $(date +%Y/%m/%d) ----------" >| "$report"
+
+status=0
+
+if [[ -d $1 || -z $1 ]]; then
+    test_input=$(find $1 -type f -name "Input")
+    echo "Suite:" >> "$report"
+
+    last_suite=""
+
+    for input in $test_input; do
+        test_name=$(dirname "$input")
+        current_suite=$(dirname "$test_name")
+
+        if [[ $current_suite != $last_suite ]]; then
+            echo "$current_suite"
+            echo "$current_suite" >> "$report"
+            last_suite="$current_suite"
+        fi
+
+        echo -n "    $test_name - "
+        echo -n "    $test_name - " >> "$report"
+
+        java Main "$test_name/CurrentEvents" < $input &> temp
+        if [[ $? -ne 0 ]]; then
+            echo "failed"
+            echo "failed" >> "$report"
+            cat temp >> "$report"
+            status=1
+        elif ! diff temp "$test_name/ExpectedOutput" &>/dev/null; then
+            echo "failed"
+            echo "failed" >> "$report"
+            echo "Expected output: " >> "$report"
+            cat "$test_name/ExpectedOutput" >> "$report"
+            echo "Actual output: " >> "$report"
+            cat temp >> "$report"
+            status=1
+        else
+            echo "passed"
+            echo "passed" >> "$report"
+        fi
+    done
+fi
+
+exit $status
+
+#elif [ -f $1 ]; then
+
+
+#else
+
+#fi
