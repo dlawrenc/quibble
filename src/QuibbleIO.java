@@ -17,6 +17,11 @@ public class QuibbleIO {
 
     // unicode sequence for EOF
     public static String EOF = "\u001a";
+    private Scanner in;
+
+    public QuibbleIO() {
+        in = new Scanner(System.in);
+    }
 
     /**
      * Returns the user input as a string
@@ -24,16 +29,15 @@ public class QuibbleIO {
      * @param prompt - a prompt to be displayed in the terminal
      * @return the user input as a string
      */
-    public static String get_user_input(String prompt) {
-        Scanner sc = new Scanner(System.in);
+    public String get_user_input(String prompt) {
         System.out.print(prompt);
-        String input;
+        String input = "";
         try {
-            input = sc.nextLine();
+            input = in.nextLine();
         }
         // Input is EOF
         catch (java.util.NoSuchElementException e) {
-            return QuibbleIO.EOF;
+            System.exit(0);
         }
         return input;
     }
@@ -43,7 +47,7 @@ public class QuibbleIO {
      * @param prompt - a terminal prompt
      * @return user date
      */
-    public static String get_user_event_date(String prompt) {
+    public String get_user_event_date(String prompt) {
         boolean input_OK = false;
         SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
         sdf.setLenient(false);
@@ -73,12 +77,12 @@ public class QuibbleIO {
      * @param prompt - a terminal prompt
      * @return the number of tickets
      */
-    public static int get_user_event_tickets(String prompt) {
+    public int get_user_event_tickets(String prompt) {
         boolean input_OK = false;
         int user_int = 0;
         while (!input_OK) {
             try {
-                user_int = Integer.parseInt(QuibbleIO.get_user_input(prompt));
+                user_int = Integer.parseInt(get_user_input(prompt));
                 if (user_int < Event.MIN_TICKETS) {
                     System.err.println("The number of tickets entered cannot be less than " + Event.MIN_TICKETS + ".");
                 }
@@ -102,7 +106,7 @@ public class QuibbleIO {
      * @param prompt - a terminal prompt
      * @return the event name
      */
-    public static String get_user_event_name(String prompt) {
+    public String get_user_event_name(String prompt) {
         boolean input_OK = false;
         String user_event = "";
         while (!input_OK) {
@@ -121,7 +125,7 @@ public class QuibbleIO {
      * Returns the current date in YYMMDD format as a string
      * @return the current date
      */
-    public static String get_current_date() {
+    public String get_current_date() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
         Date now = new Date();
         return sdf.format(now);
@@ -132,7 +136,7 @@ public class QuibbleIO {
      * @param events_file - the events file to read
      * @return the list of events
      */
-    public static ArrayList<Event> read_events_file(String events_file) {
+    public ArrayList<Event> read_events_file(String events_file) {
         ArrayList<Event> events = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(events_file))) {
             String line;
@@ -153,7 +157,7 @@ public class QuibbleIO {
         return events;
     }
 
-    public static String create_transaction_file(int session_number) {
+    public String create_transaction_file(int session_number) {
         String filename = "transaction-" + get_current_date() + "-" + session_number;
         File file = new File(filename);
 
@@ -176,7 +180,7 @@ public class QuibbleIO {
      * @param t_file - the transaction file
      * @param transactions - lost of transactions
      */
-    public static void write_transactions(String t_file, ArrayList<Transaction> transactions) {
+    public void write_transactions(String t_file, ArrayList<Transaction> transactions) {
         File file = new File(t_file);
         try {
             FileWriter fw = new FileWriter(file);

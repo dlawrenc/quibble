@@ -38,6 +38,7 @@ public class QuibbleFE {
     private int session_num;
     private ArrayList<Event> current_events;
     private ArrayList<Transaction> transactions;
+    private QuibbleIO qio;
 
     // List of valid FE commands
     private String[] commands = {"logout", "sell", "return", "create", "add", "delete", "login"};
@@ -46,6 +47,7 @@ public class QuibbleFE {
      * Default constructor for the front end. Used for testing when no current events file is supplied.
      */
     public QuibbleFE() {
+        qio = new QuibbleIO();
         current_user = new Account();
         current_events = new ArrayList<>();
         transactions = new ArrayList<>();
@@ -59,8 +61,9 @@ public class QuibbleFE {
      * @param events_file
      */
     public QuibbleFE(String events_file) {
+        qio = new QuibbleIO();
         current_user = new Account();
-        current_events = QuibbleIO.read_events_file(events_file);
+        current_events = qio.read_events_file(events_file);
         transactions = new ArrayList<>();
         current_command = "";
         session_num = 1;
@@ -73,11 +76,7 @@ public class QuibbleFE {
     public void start() {
 
         while (true) {
-            String command = QuibbleIO.get_user_input("Enter command: ");
-            if (command.equals(QuibbleIO.EOF)) {
-                break;
-            }
-
+            String command = qio.get_user_input("Enter command: ");
             current_command = command;
 
             if (!is_valid_command(command)) {
@@ -123,11 +122,11 @@ public class QuibbleFE {
     public void execute_login() {
         // are we already logged in?
         if (current_user.is_logged_in()) {
-            System.out.println(QuibbleFEError.already_logged_in_error(current_user.toString()));
+            System.err.println(QuibbleFEError.already_logged_in_error(current_user.toString()));
             return;
         }
 
-        String user = QuibbleIO.get_user_input("Username: ");
+        String user = qio.get_user_input("Username: ");
         try {
             current_user.login(user);
         }
@@ -166,7 +165,7 @@ public class QuibbleFE {
             return;
         }
 
-        String event_name = QuibbleIO.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name: ");
         Event event = new Event(event_name);
 
         // does the event already exist in the system?
@@ -183,9 +182,9 @@ public class QuibbleFE {
             return;
         }
 
-        String event_date = QuibbleIO.get_user_event_date("Event date: ");
+        String event_date = qio.get_user_event_date("Event date: ");
         event.set_event_date(event_date);
-        int event_tickets = QuibbleIO.get_user_event_tickets("Number of tickets: ");
+        int event_tickets = qio.get_user_event_tickets("Number of tickets: ");
         event.set_ticket_number(event_tickets);
 
         // add the event and transaction to each list
@@ -204,7 +203,7 @@ public class QuibbleFE {
             return;
         }
 
-        String event_name = QuibbleIO.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name: ");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -229,7 +228,7 @@ public class QuibbleFE {
      * (if the event is found) and removes a user specified number of tickets from it.
      */
     public void execute_sell() {
-        String event_name = QuibbleIO.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name: ");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -238,7 +237,7 @@ public class QuibbleFE {
         }
 
         Event found = find_current_event(event);
-        int tickets = QuibbleIO.get_user_event_tickets("Number of tickets: ");
+        int tickets = qio.get_user_event_tickets("Number of tickets: ");
 
         try {
             found.sell_tickets(tickets, current_user);
@@ -262,7 +261,7 @@ public class QuibbleFE {
             return;
         }
 
-        String event_name = QuibbleIO.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name: ");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -271,7 +270,7 @@ public class QuibbleFE {
         }
 
         Event found = find_current_event(event);
-        int tickets = QuibbleIO.get_user_event_tickets("Number of tickets: ");
+        int tickets = qio.get_user_event_tickets("Number of tickets: ");
 
         try {
             found.add_tickets(tickets);
@@ -289,7 +288,7 @@ public class QuibbleFE {
      * returns a user specified number of tickets to it.
      */
     public void execute_return() {
-        String event_name = QuibbleIO.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name: ");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -298,7 +297,7 @@ public class QuibbleFE {
         }
 
         Event found = find_current_event(event);
-        int tickets = QuibbleIO.get_user_event_tickets("Number of tickets: ");
+        int tickets = qio.get_user_event_tickets("Number of tickets: ");
 
         try {
             found.return_tickets(tickets, current_user);
@@ -352,8 +351,8 @@ public class QuibbleFE {
      * Ends a front end session, writing all transactions to a file and clearing the current list of transactions.
      */
     public void end_session() {
-        String t_file = QuibbleIO.create_transaction_file(session_num);
-        QuibbleIO.write_transactions(t_file, transactions);
+        String t_file = qio.create_transaction_file(session_num);
+        qio.write_transactions(t_file, transactions);
         ++session_num;
         transactions.clear();
     }
