@@ -25,6 +25,8 @@ if [ $# -gt 1 ]; then
 fi
 
 results="$(dirname $0)/results"
+
+# java needs a classpath to know where the main class for quibble is located
 export CLASSPATH="../$(dirname $0)/out/production/quibble.git"
 
 if [[ ! -d "$results" ]]; then
@@ -37,9 +39,34 @@ touch "$report"
 
 echo "---------- $(date +%Y/%m/%d) ----------" >| "$report"
 
+testsuite_dir="$1"
+# if the user didn't supply a testuite to run, we will run every test in the root
+# test directory instead.
+if [[ -z "$testsuite_dir" ]]; then
+    testsuite_dir="$(dirname $0)"
+fi
+
+# exit status
 status=0
 
-if [[ -d $1 || -z $1 ]]; then
+# tests/tests_failed per suite
+tests_failed=0
+tests=0
+
+# tests_tests_failed per entire run
+total_tests_failed=0
+total_tests=0
+
+
+# If the first parameter is empty or a directory, we will need to find every valid test
+# in a single testsuite. We will consider a subdirectory to be a valid test if it contains
+# three files: Input          - the input for the test
+#              ExpectedOutput - the expected output of the test
+#              CurrentEvents  - the current events file for the test
+#
+# For simplicity, the script will search for all folders for input files, and then
+# then check to see that the parent directories of the inputs are valid tests.
+if [[ -d "$testsuite_dir" || -z "$testsuite_dir" ]]; then
     test_input=$(find $1 -type f -name "Input")
     echo "Suite:" >> "$report"
 
@@ -49,7 +76,7 @@ if [[ -d $1 || -z $1 ]]; then
         test_name=$(dirname "$input")
         current_suite=$(dirname "$test_name")
 
-        if [[ $current_suite != $last_suite ]]; then
+        if [[ "$current_suite" != "$last_suite" ]]; then
             echo "$current_suite"
             echo "$current_suite" >> "$report"
             last_suite="$current_suite"
