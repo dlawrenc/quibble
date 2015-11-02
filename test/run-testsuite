@@ -66,7 +66,7 @@ total_tests=0
 #
 # For simplicity, the script will search for all folders for input files, and then
 # then check to see that the parent directories of the inputs are valid tests.
-if [[ -d "$testsuite_dir" || -z "$testsuite_dir" ]]; then
+if [[ -d "$testsuite_dir" ]]; then
     test_input=$(find $1 -type f -name "Input")
     echo "Suite:" >> "$report"
 
