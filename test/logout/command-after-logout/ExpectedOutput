@@ -1,5 +1,6 @@
-Command: login
-Username: admin
-Command: logout
-Command: add
+Command:
+Username:
+Command:
+Command:
 Command 'add' requires a valid login. You must login before you can create or modify an event.
+Command:
