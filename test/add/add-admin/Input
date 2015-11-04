@@ -1,6 +1,11 @@
 login
 admin
 add
+<<<<<<< HEAD
 test event
 1
 logout
+=======
+Test_Event
+1
+>>>>>>> dbc065faa8b96cce31149e4454ffb12fb836e08e
