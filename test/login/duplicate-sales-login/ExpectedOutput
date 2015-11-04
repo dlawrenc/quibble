@@ -1,3 +1,4 @@
-login
-sales
-login
+Command: login
+Username: sales
+Command: login
+Already logged into account 'admin'.

@@ -1,0 +1,7 @@
+Command: login
+Username: admin
+Command: add
+Event name: test event
+Tickets: 1
+Command: logout
+Command: 

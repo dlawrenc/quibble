@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#
 # Script for running the Quibble test suite. When run without any paramaters, the script will
 # run every test suite and report the results to the terminal and a generate a report file in the
 # "results" directory.
@@ -49,12 +49,12 @@ fi
 # exit status
 status=0
 
-# tests/tests_failed per suite
-tests_failed=0
+# tests/tests_passed per suite
+tests_passed=0
 tests=0
 
-# tests_tests_failed per entire run
-total_tests_failed=0
+# tests_tests_passed per entire run
+total_tests_passed=0
 total_tests=0
 
 
@@ -76,7 +76,21 @@ if [[ -d "$testsuite_dir" ]]; then
         test_name=$(dirname "$input")
         current_suite=$(dirname "$test_name")
 
-        if [[ "$current_suite" != "$last_suite" ]]; then
+        # we must be in a new suite, make sure the output reflects this
+        if [[ "$current_suite" != "$last_suite"]]; then
+
+            # print number of tests passed for the last suite
+            if [[ $total_tests -ne 0 ]]; then
+                echo "$last_suite: $tests_passed/$tests tests passed"
+                echo
+
+                echo "$last_suite: $tests_passed/$tests tests passed" >> "$report"
+                echo >> "$report"
+
+                tests_passed=0
+                tests=0
+            fi
+
             echo "$current_suite"
             echo "$current_suite" >> "$report"
             last_suite="$current_suite"
@@ -91,18 +105,23 @@ if [[ -d "$testsuite_dir" ]]; then
             echo "failed" >> "$report"
             cat temp >> "$report"
             status=1
+
         elif ! diff temp "$test_name/ExpectedOutput" &>/dev/null; then
+            # terminal output
             echo "failed"
+
+            # report output
             echo "failed" >> "$report"
-            echo "Expected output: " >> "$report"
-            cat "$test_name/ExpectedOutput" >> "$report"
-            echo "Actual output: " >> "$report"
-            cat temp >> "$report"
             status=1
+
         else
             echo "passed"
             echo "passed" >> "$report"
         fi
+
+        (( tests++ ))
+        (( total_tests++ ))
+
     done
 fi
 
