@@ -76,7 +76,7 @@ public class QuibbleFE {
     public void start() {
 
         while (true) {
-            String command = qio.get_user_input("Enter command: ");
+            String command = qio.get_user_input("Enter command:");
             current_command = command;
 
             if (!is_valid_command(command)) {
@@ -126,7 +126,7 @@ public class QuibbleFE {
             return;
         }
 
-        String user = qio.get_user_input("Username: ");
+        String user = qio.get_user_input("Username:");
         try {
             current_user.login(user);
         }
@@ -165,7 +165,7 @@ public class QuibbleFE {
             return;
         }
 
-        String event_name = qio.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
 
         // does the event already exist in the system?
@@ -182,9 +182,9 @@ public class QuibbleFE {
             return;
         }
 
-        String event_date = qio.get_user_event_date("Event date: ");
+        String event_date = qio.get_user_event_date("Event date:");
         event.set_event_date(event_date);
-        int event_tickets = qio.get_user_event_tickets("Number of tickets: ");
+        int event_tickets = qio.get_user_event_tickets("Number of tickets:");
         event.set_ticket_number(event_tickets);
 
         // add the event and transaction to each list
@@ -203,7 +203,7 @@ public class QuibbleFE {
             return;
         }
 
-        String event_name = qio.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -228,7 +228,7 @@ public class QuibbleFE {
      * (if the event is found) and removes a user specified number of tickets from it.
      */
     public void execute_sell() {
-        String event_name = qio.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -237,7 +237,7 @@ public class QuibbleFE {
         }
 
         Event found = find_current_event(event);
-        int tickets = qio.get_user_event_tickets("Number of tickets: ");
+        int tickets = qio.get_user_event_tickets("Number of tickets:");
 
         try {
             found.sell_tickets(tickets, current_user);
@@ -261,7 +261,7 @@ public class QuibbleFE {
             return;
         }
 
-        String event_name = qio.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -270,7 +270,7 @@ public class QuibbleFE {
         }
 
         Event found = find_current_event(event);
-        int tickets = qio.get_user_event_tickets("Number of tickets: ");
+        int tickets = qio.get_user_event_tickets("Number of tickets:");
 
         try {
             found.add_tickets(tickets);
@@ -288,7 +288,7 @@ public class QuibbleFE {
      * returns a user specified number of tickets to it.
      */
     public void execute_return() {
-        String event_name = qio.get_user_event_name("Event name: ");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -297,7 +297,7 @@ public class QuibbleFE {
         }
 
         Event found = find_current_event(event);
-        int tickets = qio.get_user_event_tickets("Number of tickets: ");
+        int tickets = qio.get_user_event_tickets("Number of tickets:");
 
         try {
             found.return_tickets(tickets, current_user);

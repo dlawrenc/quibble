@@ -8,7 +8,6 @@
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Welcome to Quibble!");
         QuibbleFE fe = null;
         if (args.length > 1) {
             System.err.println("Usage: Quibble [events-file]");

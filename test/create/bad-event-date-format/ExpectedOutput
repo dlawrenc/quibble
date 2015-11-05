@@ -1,6 +1,6 @@
-Command:
+Enter command:
 Username:
-Command:
+Enter command:
 Event name:
 Event date:
 Invalid event date. The event date must be in the form of YYMMDD, where:
@@ -8,4 +8,4 @@ YY is a number from 00-99, representing the year of an event.
 MM is a number from 01-12, representing the month of the event.
 DD is a number from 01-31, representing the day of the event.
 Example:
-Command:
+Enter command:

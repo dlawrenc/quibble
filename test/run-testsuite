@@ -71,13 +71,14 @@ if [[ -d "$testsuite_dir" ]]; then
     echo "Suite:" >> "$report"
 
     last_suite=""
+    current_suite=""
 
     for input in $test_input; do
         test_name=$(dirname "$input")
         current_suite=$(dirname "$test_name")
 
         # we must be in a new suite, make sure the output reflects this
-        if [[ "$current_suite" != "$last_suite"]]; then
+        if [[ "$current_suite" != "$last_suite" ]]; then
 
             # print number of tests passed for the last suite
             if [[ $total_tests -ne 0 ]]; then
@@ -99,37 +100,69 @@ if [[ -d "$testsuite_dir" ]]; then
         echo -n "    $test_name - "
         echo -n "    $test_name - " >> "$report"
 
-        java Main "$test_name/CurrentEvents" < $input &> temp
+        java Main "$test_name/CurrentEvents" < $input &> CurrentOutput
+        transactions=transaction-*
+        for t in $transactions; do
+            [ -e "$t" ] && cat $t >> CurrentTFile || touch CurrentTFile
+        done
+
+
         if [[ $? -ne 0 ]]; then
+            s=$?
             echo "failed"
             echo "failed" >> "$report"
+            echo "        Quibble exited with status $s"
+            echo "        Quibble exited with status $s" >> "$report"
             cat temp >> "$report"
             status=1
 
-        elif ! diff temp "$test_name/ExpectedOutput" &>/dev/null; then
-            # terminal output
+        elif ! diff CurrentOutput "$test_name/ExpectedOutput" &> /dev/null; then
             echo "failed"
+            echo "        Expected output mismatch"
 
-            # report output
             echo "failed" >> "$report"
+            diff -u CurrentTFile "$test_name/ExpectedOutput" >> "$report"
+            status=1
+
+        elif ! diff CurrentTFile "$test_name/ExpectedTFile" &> /dev/null; then
+            echo "failed"
+            echo "        Expected transaction file mismatch"
+
+            echo "failed" >> "$report"
+            echo >> "$report"
+            echo '---------- transaction mismatch ----------' >> "$report"
+            diff -u CurrentTFile "$test_name/ExpectedTFile" >> "$report"
+            echo >> "$report"
             status=1
 
         else
             echo "passed"
             echo "passed" >> "$report"
+            (( tests_passed++ ))
+            (( total_tests_passed++ ))
         fi
+
+        # cleanup the temp files and transaction files from the run
+        rm -f CurrentTFile
+        rm -f CurrentOutput
+        rm -f transaction-*
 
         (( tests++ ))
         (( total_tests++ ))
 
     done
+
+    echo "$last_suite: $tests_passed/$tests tests passed"
+    echo "$last_suite: $tests_passed/$tests tests passed" >> "$report"
+    echo
+    echo >> "$report"
+    echo "$total_tests_passed/$total_tests tests passed"
+    echo "$total_tests_passed/$total_tests tests passed" >> "$report"
+
+fi
+
+if [[ $status -ne 0 ]]; then
+    echo "Some tests failed. Please see report $report for details."
 fi
 
 exit $status
-
-#elif [ -f $1 ]; then
-
-
-#else
-
-#fi

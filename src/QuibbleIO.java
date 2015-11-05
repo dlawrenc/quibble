@@ -30,7 +30,7 @@ public class QuibbleIO {
      * @return the user input as a string
      */
     public String get_user_input(String prompt) {
-        System.out.print(prompt);
+        System.out.println(prompt);
         String input = "";
         try {
             input = in.nextLine();
