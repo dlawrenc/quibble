@@ -110,10 +110,13 @@ if [[ -d "$testsuite_dir" ]]; then
         if [[ $? -ne 0 ]]; then
             s=$?
             echo "failed"
-            echo "failed" >> "$report"
             echo "        Quibble exited with status $s"
-            echo "        Quibble exited with status $s" >> "$report"
+
+            echo "failed" >> "$report"
+            echo '---------- quibble exit failure ----------' >> "$report"
             cat temp >> "$report"
+            echo >> "$report"
+
             status=1
 
         elif ! diff CurrentOutput "$test_name/ExpectedOutput" &> /dev/null; then
@@ -121,7 +124,10 @@ if [[ -d "$testsuite_dir" ]]; then
             echo "        Expected output mismatch"
 
             echo "failed" >> "$report"
-            diff -u CurrentTFile "$test_name/ExpectedOutput" >> "$report"
+            echo '---------- output mismatch ----------' >> "$report"
+            diff -u CurrentOutput "$test_name/ExpectedOutput" >> "$report"
+            echo >> "$report"
+
             status=1
 
         elif ! diff CurrentTFile "$test_name/ExpectedTFile" &> /dev/null; then
@@ -129,10 +135,10 @@ if [[ -d "$testsuite_dir" ]]; then
             echo "        Expected transaction file mismatch"
 
             echo "failed" >> "$report"
-            echo >> "$report"
             echo '---------- transaction mismatch ----------' >> "$report"
             diff -u CurrentTFile "$test_name/ExpectedTFile" >> "$report"
             echo >> "$report"
+
             status=1
 
         else
