@@ -40,7 +40,7 @@ public class Transaction {
     @Override public String toString() {
         String line_to_add = String.format("%2s" ,t_code).replace(" ", "0") // pad left side with up to 2 zeros
                              + " " + String.format("%-20s", event.get_event_name()) // pad right side with up to 20 spaces
-                             + " " + String.format("%-6s", event.get_event_date())  // pad right side with up to 6 spaces
+                             + " " + String.format("%6s", event.get_event_date()) .replace(" ", "0") // pad right side with up to 6 zeros
                              + " " + String.format("%5s", event.get_num_tickets()).replace(" ", "0"); // pad left side with up to 5 zeros
         return line_to_add;
     }

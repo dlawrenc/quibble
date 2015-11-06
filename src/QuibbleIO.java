@@ -49,6 +49,7 @@ public class QuibbleIO {
      */
     public String get_user_event_date(String prompt) {
         boolean input_OK = false;
+        int current_date = Integer.parseInt(get_current_date());
         SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
         sdf.setLenient(false);
         Date date = null;
@@ -57,7 +58,13 @@ public class QuibbleIO {
             String user_date = get_user_input(prompt);
             try {
                 date = sdf.parse(user_date);
-                input_OK = true;
+                System.out.println(current_date);
+                if (check_valid_date(current_date, Integer.parseInt(sdf.format(date)))) {
+                    System.err.println("The date of an event must be within two years of the current date.");
+                }
+                else {
+                    input_OK = true;
+                }
             }
             catch (ParseException e) {
                 System.err.println("Invalid event date. The event date must be in the form of YYMMDD, where:\n" +
@@ -67,7 +74,17 @@ public class QuibbleIO {
                         "Example: 160101 would correspond to the date January 1st, 2016");
             }
         }
+        int current_date_i = Integer.parseInt(get_current_date());
+        int user_date_i = Integer.parseInt(sdf.format(date));
+
         return sdf.format(date);
+    }
+
+    public boolean check_valid_date(int current_date, int user_date) {
+        if (Math.abs(current_date - user_date) > 20000) {
+            return true;
+        }
+        return false;
     }
 
     /**
