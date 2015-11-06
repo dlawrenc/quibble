@@ -2,5 +2,5 @@ Enter command:
 Username:
 Enter command:
 Event name:
-The event name specified already exists.
+Unable to execute command 'create'. Event 'test event' already exists.
 Enter command:

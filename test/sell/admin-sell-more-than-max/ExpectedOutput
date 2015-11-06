@@ -2,6 +2,6 @@ Enter command:
 Username:
 Enter command:
 Event name:
-Tickets:
-Account 'admin' cannot sell more than 99999 tickets.
-Enter command:
+Number of tickets:
+The number of tickets entered cannot be greater than 99999.
+Number of tickets:

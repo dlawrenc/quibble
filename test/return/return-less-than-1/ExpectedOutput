@@ -2,6 +2,6 @@ Enter command:
 Username:
 Enter command:
 Event name:
-Tickets:
-Unable to return tickets for event 'test event'. The number of tickets to be returned must be greater than zero.
-Enter command:
+Number of tickets:
+The number of tickets entered cannot be less than 1.
+Number of tickets:

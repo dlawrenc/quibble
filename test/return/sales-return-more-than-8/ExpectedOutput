@@ -2,5 +2,6 @@ Enter command:
 Username:
 Enter command:
 Event name:
-Tickets:
-Account 'sales' cannot return more than 8 tickets in one session.
+Number of tickets:
+Unable to return tickets for event 'test event'. Account 'sales' cannot return more than 8 tickets in a single transaction.
+Enter command:

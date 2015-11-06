@@ -2,5 +2,5 @@ Enter command:
 Username:
 Enter command:
 Event name:
-Unable to return tickets for event 'test event'. The event does not exist.
+Unable to execute command 'sell'. Event 'test event' does not exist.
 Enter command:

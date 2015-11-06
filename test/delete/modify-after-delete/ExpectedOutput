@@ -4,4 +4,5 @@ Enter command:
 Event name:
 Enter command:
 Event name:
-Could not modify event 'test event'. This event has been deleted.
+Event 'test event' has been deleted and cannot be modified.
+Enter command:

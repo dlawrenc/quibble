@@ -3,5 +3,6 @@ Username:
 Enter command:
 Event name:
 Event date:
-Tickets:
-The total number of tickets for this event cannot exceed 99999.
+Number of tickets:
+The number of tickets entered cannot be greater than 99999.
+Number of tickets:
