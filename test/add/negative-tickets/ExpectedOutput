@@ -1,7 +1,7 @@
 Enter command:
 Username:
 Enter command:
-Event name:
-Tickets:
-You cannot add a negative number of tickets to an event.
-Enter command:
+src.Event name:
+Number of tickets:
+The number of tickets entered cannot be less than 1.
+Number of tickets:

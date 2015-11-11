@@ -1,7 +1,7 @@
 Enter command:
 Username:
 Enter command:
-Event name:
+src.Event name:
 Number of tickets:
 Unable to return tickets for event 'test event'. The number of tickets for this event cannot exceed 99999. Current number of tickets for event 'test event': 99999
 Enter command:

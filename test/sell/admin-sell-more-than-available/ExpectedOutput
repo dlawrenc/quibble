@@ -1,7 +1,7 @@
 Enter command:
 Username:
 Enter command:
-Event name:
+src.Event name:
 Number of tickets:
 Unable to sell tickets for event 'test event'. The number of tickets to be sold exceeds the number of tickets available. Tickets left: 1
 Enter command:

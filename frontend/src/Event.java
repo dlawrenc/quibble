@@ -1,4 +1,4 @@
-/**
+package src; /**
  * @author Dan Lawrence, Jerry Mak
  */
 
@@ -14,7 +14,7 @@
  * tickets. Methods that relate to add, sell, and return command will throw EventExceptions upon trying to
  * modify an event with an illegal number of tickets.
  *
- * The constructors of this class do not throw EventExceptions. It is assumed that the QuibbleIO class will
+ * The constructors of this class do not throw EventExceptions. It is assumed that the src.QuibbleIO class will
  * get valid input before creating an instance of this class.
  */
 public class Event {
@@ -25,16 +25,18 @@ public class Event {
     private String event_name;
     private String event_date;
     private int num_tickets;
+    private int session_num; // created in session number
     private boolean deleted;
 
 
     /**
-     * Default constructor for the Event class. Initializes all attributes to empty/zero values.
+     * Default constructor for the src.Event class. Initializes all attributes to empty/zero values.
      */
     public Event() {
         event_name = "";
         event_date = "";
         num_tickets = 0;
+        session_num = 0;
         deleted = false;
     }
 
@@ -48,6 +50,7 @@ public class Event {
         event_name = event_name_;
         event_date = "";
         num_tickets = 0;
+        session_num = 0;
         deleted = false;
     }
 
@@ -61,6 +64,7 @@ public class Event {
         event_name = event_name_;
         event_date = "";
         num_tickets = num_tickets_;
+        session_num = 0;
         deleted = false;
     }
 
@@ -76,6 +80,7 @@ public class Event {
         event_name = event_name_;
         event_date = event_date_;
         num_tickets = num_tickets_;
+        session_num = 0;
         deleted = false;
     }
 
@@ -133,9 +138,17 @@ public class Event {
         return num_tickets;
     }
 
+    public int get_session_num() {
+        return session_num;
+    }
+
+    void set_session_num(int num) {
+        session_num = num;
+    }
+
     /**
      * Adds tickets to an event. The event must be active and the number of tickets to add must not exceed
-     * the maximum number of tickets. Otherwise, this method will throw an EventException.
+     * the maximum number of tickets. Otherwise, this method will throw an src.EventException.
      *
      * @param tickets - the number of tickets to be added
      * @throws EventException - when the event is deleted or in an illegal state
@@ -160,7 +173,7 @@ public class Event {
      *     The sales account tries to sell more than 8 tickets
      *
      * @param tickets - the number of tickets to sell
-     * @param current_user - the current user as an Account object
+     * @param current_user - the current user as an src.Account object
      * @throws EventException - when an illegal state is encountered
      */
     public void sell_tickets(int tickets, Account current_user) throws EventException {
@@ -186,7 +199,7 @@ public class Event {
      *     The sales account tries to return more than 8 tickets
      *
      * @param tickets - the number of tickets to return
-     * @param current_user - the current user as an Account object
+     * @param current_user - the current user as an src.Account object
      * @throws EventException - when an illegal state is encountered
      */
     public void return_tickets(int tickets, Account current_user) throws EventException {
@@ -203,7 +216,7 @@ public class Event {
     }
 
     /**
-     * Marks an event as deleted. If an event is already deleted, this method will throw an EventException.
+     * Marks an event as deleted. If an event is already deleted, this method will throw an src.EventException.
      *
      * @throws EventException - when an event has already been deleted
      */
@@ -238,7 +251,7 @@ public class Event {
     }
 
     /**
-     * Clones an Event object.
+     * Clones an src.Event object.
      * @return a cloned event object.
      */
     public Event clone() {

@@ -1,8 +1,10 @@
 Enter command:
-Event name:
-Event date:
-Tickets:
+Username:
 Enter command:
-Event name:
-Cannot add in the same session of creating that event
+src.Event name:
+src.Event date:
+Number of tickets:
+Enter command:
+src.Event name:
+You cannot add tickets to an event that has been created in the same session.
 Enter command:

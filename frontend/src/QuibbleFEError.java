@@ -1,3 +1,5 @@
+package src;
+
 /**
  * @author Dan Lawrence, Jerry Mak
  *
@@ -45,7 +47,7 @@ public class QuibbleFEError {
      * @return A message telling the user that an admin login is required
      */
     public static String insufficient_privileges_error(String command_name) {
-        return "Insufficient privileges for command '" + command_name + "'. you must " +
+        return "Insufficient privileges for command '" + command_name + "'. You must " +
                            "login to the admin account to execute this command.";
     }
 
@@ -67,7 +69,7 @@ public class QuibbleFEError {
      * @return a message telling the user that the event specified was not found in the system
      */
     public static String event_not_found(String event_name, String command_name) {
-        return base_error(command_name) + " Event '" + event_name + "' does not exist.";
+        return base_error(command_name) + " src.Event '" + event_name + "' does not exist.";
     }
 
     /**
@@ -79,7 +81,7 @@ public class QuibbleFEError {
      */
 
     public static String event_already_exists(String event_name, String command_name) {
-        return base_error(command_name) + " Event '" + event_name + "' already exists.";
+        return base_error(command_name) + " src.Event '" + event_name + "' already exists.";
     }
 
     /**
@@ -89,7 +91,7 @@ public class QuibbleFEError {
      * @return a message informing the user that an event has already been deleted
      */
     public static String event_deleted(String event_name) {
-        return "Event '" + event_name + "' has been deleted and cannot be modified.";
+        return "src.Event '" + event_name + "' has been deleted and cannot be modified.";
     }
 
     /**
@@ -103,7 +105,7 @@ public class QuibbleFEError {
      */
     public static String unprivileged_tickets(String event_name, String command_name, Account current_user) {
         return  "Unable to " + command_name + " tickets for event '" + event_name + "'. " +
-                "Account '" + current_user.toString() + "' cannot " + command_name +
+                "src.Account '" + current_user.toString() + "' cannot " + command_name +
                 " more than 8 tickets in a " + "single transaction.";
 
     }
@@ -150,6 +152,5 @@ public class QuibbleFEError {
                 ". Current number of tickets for event '" + event_name + "': " + num_tickets;
 
     }
-
 
 }

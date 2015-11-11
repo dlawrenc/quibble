@@ -1,4 +1,4 @@
-/**
+package src; /**
  * @author Dan Lawrence, Jerry Mak
  */
 import java.io.*;
@@ -58,7 +58,6 @@ public class QuibbleIO {
             String user_date = get_user_input(prompt);
             try {
                 date = sdf.parse(user_date);
-                System.out.println(current_date);
                 if (check_valid_date(current_date, Integer.parseInt(sdf.format(date)))) {
                     System.err.println("The date of an event must be within two years of the current date.");
                 }
@@ -70,17 +69,16 @@ public class QuibbleIO {
                 System.err.println("Invalid event date. The event date must be in the form of YYMMDD, where:\n" +
                         "YY is a number from 00-99, representing the year of an event.\n" +
                         "MM is a number from 01-12, representing the month of the event.\n" +
-                        "DD is a number from 01-31, representing the day of the event.\n" +
-                        "Example: 160101 would correspond to the date January 1st, 2016");
+                        "DD is a number from 01-31, representing the day of the event.");
             }
         }
-        int current_date_i = Integer.parseInt(get_current_date());
-        int user_date_i = Integer.parseInt(sdf.format(date));
-
         return sdf.format(date);
     }
 
     public boolean check_valid_date(int current_date, int user_date) {
+        if (current_date > user_date) {
+            return false;
+        }
         if (Math.abs(current_date - user_date) > 20000) {
             return true;
         }
@@ -89,7 +87,7 @@ public class QuibbleIO {
 
     /**
      * Returns the number of tickets specified by the user. The number of tickets must be between MIN_TICKETS and
-     * MAX_TICKETS (as defined in Event). Loops until the user enters a valid number of tickets
+     * MAX_TICKETS (as defined in src.Event). Loops until the user enters a valid number of tickets
      *
      * @param prompt - a terminal prompt
      * @return the number of tickets
@@ -129,7 +127,7 @@ public class QuibbleIO {
         while (!input_OK) {
             user_event = get_user_input(prompt);
             if (user_event.length() > Event.MAX_EVENT_NAME) {
-                System.err.println("The name of an event cannot exceed " + Event.MAX_EVENT_NAME + " characters");
+                System.err.println("The name of an event cannot exceed " + Event.MAX_EVENT_NAME + " characters.");
             }
             else {
                 input_OK = true;
@@ -149,7 +147,7 @@ public class QuibbleIO {
     }
 
     /**
-     * Parses the events file into a list of Event objects. Assumes that the file is properly formatted.
+     * Parses the events file into a list of src.Event objects. Assumes that the file is properly formatted.
      * @param events_file - the events file to read
      * @return the list of events
      */
@@ -158,7 +156,7 @@ public class QuibbleIO {
         try (BufferedReader br = new BufferedReader(new FileReader(events_file))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // Event names should be 20 characters long
+                // src.Event names should be 20 characters long
                 String event_name = line.substring(0, 20).trim();
                 // ticket numbers should be 5 characters long
                 int ticket_num = Integer.parseInt(line.substring(21));

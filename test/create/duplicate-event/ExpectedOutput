@@ -1,6 +1,6 @@
 Enter command:
 Username:
 Enter command:
-Event name:
-Unable to execute command 'create'. Event 'test event' already exists.
+src.Event name:
+Unable to execute command 'create'. src.Event 'test event' already exists.
 Enter command:

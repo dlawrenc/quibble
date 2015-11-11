@@ -1,7 +1,7 @@
 Enter command:
 Username:
 Enter command:
-Event name:
-Tickets:
-The total number of tickets for this event cannot exceed 99999 (Current number of tickets for test event:
+src.Event name:
+Number of tickets:
+Unable to add tickets for event 'test event'. The number of tickets for this event cannot exceed 99999. Current number of tickets for event 'test event': 99999
 Enter command:

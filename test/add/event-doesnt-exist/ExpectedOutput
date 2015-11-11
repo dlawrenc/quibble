@@ -1,5 +1,6 @@
 Enter command:
 Username:
 Enter command:
-Event name:
-Could not add tickets for event 'nosuchevent'. This event does not exist.
+src.Event name:
+Unable to execute command 'add'. src.Event 'nosuchevent' does not exist.
+Enter command:

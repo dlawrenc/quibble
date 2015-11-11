@@ -100,7 +100,7 @@ if [[ -d "$testsuite_dir" ]]; then
         echo -n "    $test_name - "
         echo -n "    $test_name - " >> "$report"
 
-        java Main "$test_name/CurrentEvents" < $input &> CurrentOutput
+        java src.Main "$test_name/CurrentEvents" < $input &> CurrentOutput
         transactions=transaction-*
         for t in $transactions; do
             [ -e "$t" ] && cat $t >> CurrentTFile || touch CurrentTFile
