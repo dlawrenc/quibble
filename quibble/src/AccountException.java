@@ -1,4 +1,4 @@
-package src; /**
+/**
  * @author Dan Lawrence, Jerry Mak
  */
 

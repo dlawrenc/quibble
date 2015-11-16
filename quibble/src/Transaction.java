@@ -1,4 +1,4 @@
-package src; /**
+/**
  * @author Dan Lawrence, Jerry Mak
  */
 
@@ -13,7 +13,7 @@ public class Transaction {
     private Event event;
 
     /**
-     * One parameter constructor for the src.Transaction class. Sets the transaction code and creates an empty event.
+     * One parameter constructor for the Transaction class. Sets the transaction code and creates an empty event.
      * Used primarily for the "logout" transaction, which does not require specific event information.
      * @param t_code_ - code for transaction
      */
@@ -23,7 +23,7 @@ public class Transaction {
     }
 
     /**
-     * Two parameter constructor for the src.Transaction class. Sets the transaction code and clones the specified event.
+     * Two parameter constructor for the Transaction class. Sets the transaction code and clones the specified event.
      * Used for transactions other than logout, since these require event info.
      * @param t_code_ - the transaction code
      * @param event_ - the associated event

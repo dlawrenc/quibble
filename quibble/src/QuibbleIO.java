@@ -1,4 +1,4 @@
-package src; /**
+/**
  * @author Dan Lawrence, Jerry Mak
  */
 import java.io.*;
@@ -87,7 +87,7 @@ public class QuibbleIO {
 
     /**
      * Returns the number of tickets specified by the user. The number of tickets must be between MIN_TICKETS and
-     * MAX_TICKETS (as defined in src.Event). Loops until the user enters a valid number of tickets
+     * MAX_TICKETS (as defined in Event). Loops until the user enters a valid number of tickets
      *
      * @param prompt - a terminal prompt
      * @return the number of tickets
@@ -147,7 +147,7 @@ public class QuibbleIO {
     }
 
     /**
-     * Parses the events file into a list of src.Event objects. Assumes that the file is properly formatted.
+     * Parses the events file into a list of Event objects. Assumes that the file is properly formatted.
      * @param events_file - the events file to read
      * @return the list of events
      */
@@ -156,7 +156,7 @@ public class QuibbleIO {
         try (BufferedReader br = new BufferedReader(new FileReader(events_file))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // src.Event names should be 20 characters long
+                // Event names should be 20 characters long
                 String event_name = line.substring(0, 20).trim();
                 // ticket numbers should be 5 characters long
                 int ticket_num = Integer.parseInt(line.substring(21));

@@ -1,4 +1,4 @@
-package src; /**
+/**
  * @author Dan Lawrence, Jerry Mak
  */
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class QuibbleFE {
     }
 
     /**
-     * src.Main loop for front end. Waits for a user to enter a command and modifies the front end state based on the
+     * Main loop for front end. Waits for a user to enter a command and modifies the front end state based on the
      * command. Exits upon reading EOF (ctrl+D).
      */
     public void start() {
@@ -165,7 +165,7 @@ public class QuibbleFE {
             return;
         }
 
-        String event_name = qio.get_user_event_name("src.Event name:");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
         event.set_session_num(session_num);
 
@@ -173,17 +173,17 @@ public class QuibbleFE {
         if (current_events.contains(event)) {
             Event found = find_current_event(event);
             if (found.is_deleted()) {
-                // src.Event has been deleted, report this
+                // Event has been deleted, report this
                 System.err.println(QuibbleFEError.event_deleted(event_name));
             }
             else {
-                // src.Event already exists, report this
+                // Event already exists, report this
                 System.err.println(QuibbleFEError.event_already_exists(event_name, current_command));
             }
             return;
         }
 
-        String event_date = qio.get_user_event_date("src.Event date:");
+        String event_date = qio.get_user_event_date("Event date:");
         event.set_event_date(event_date);
         int event_tickets = qio.get_user_event_tickets("Number of tickets:");
         event.set_ticket_number(event_tickets);
@@ -204,7 +204,7 @@ public class QuibbleFE {
             return;
         }
 
-        String event_name = qio.get_user_event_name("src.Event name:");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -229,7 +229,7 @@ public class QuibbleFE {
      * (if the event is found) and removes a user specified number of tickets from it.
      */
     public void execute_sell() {
-        String event_name = qio.get_user_event_name("src.Event name:");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -262,7 +262,7 @@ public class QuibbleFE {
             return;
         }
 
-        String event_name = qio.get_user_event_name("src.Event name:");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {
@@ -299,7 +299,7 @@ public class QuibbleFE {
      * returns a user specified number of tickets to it.
      */
     public void execute_return() {
-        String event_name = qio.get_user_event_name("src.Event name:");
+        String event_name = qio.get_user_event_name("Event name:");
         Event event = new Event(event_name);
 
         if (!current_events.contains(event)) {

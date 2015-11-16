@@ -1,4 +1,5 @@
-package src; /**
+import java.lang.Comparable;
+/**
  * @author Dan Lawrence, Jerry Mak
  */
 
@@ -17,7 +18,7 @@ package src; /**
  * The constructors of this class do not throw EventExceptions. It is assumed that the src.QuibbleIO class will
  * get valid input before creating an instance of this class.
  */
-public class Event {
+public class Event implements Comparable {
     public static final int MIN_TICKETS = 1;        // minimum number of tickets for any transaction
     public static final int MAX_TICKETS = 99999;    // maximum number of tickets for any transaction
     public static final int MAX_EVENT_NAME = 20;    // maximum number of characters for an event
@@ -30,7 +31,7 @@ public class Event {
 
 
     /**
-     * Default constructor for the src.Event class. Initializes all attributes to empty/zero values.
+     * Default constructor for the Event class. Initializes all attributes to empty/zero values.
      */
     public Event() {
         event_name = "";
@@ -148,7 +149,7 @@ public class Event {
 
     /**
      * Adds tickets to an event. The event must be active and the number of tickets to add must not exceed
-     * the maximum number of tickets. Otherwise, this method will throw an src.EventException.
+     * the maximum number of tickets. Otherwise, this method will throw an EventException.
      *
      * @param tickets - the number of tickets to be added
      * @throws EventException - when the event is deleted or in an illegal state
@@ -161,6 +162,16 @@ public class Event {
             throw new EventException(QuibbleFEError.add_tickets_error(event_name, num_tickets));
         }
         num_tickets += tickets;
+    }
+
+    public void sell_tickets(int tickets) throws EventException {
+        if (deleted) {
+            throw new EventException(QuibbleFEError.event_deleted(event_name));
+        }
+        if ((num_tickets - tickets) < 0) {
+            throw new EventException(QuibbleFEError.sell_tickets_error(event_name, num_tickets));
+        }
+        num_tickets -= tickets;
     }
 
     /**
@@ -177,16 +188,20 @@ public class Event {
      * @throws EventException - when an illegal state is encountered
      */
     public void sell_tickets(int tickets, Account current_user) throws EventException {
-        if (deleted) {
-            throw new EventException(QuibbleFEError.event_deleted(event_name));
-        }
-        if ((num_tickets - tickets) < 0) {
-            throw new EventException(QuibbleFEError.sell_tickets_error(event_name, num_tickets));
-        }
         if (!current_user.is_admin() && tickets > 8) {
             throw new EventException(QuibbleFEError.unprivileged_tickets(event_name, "sell", current_user));
         }
-        num_tickets -= tickets;
+        sell_tickets(tickets);
+    }
+
+    public void return_tickets(int tickets) throws EventException {
+        if (deleted) {
+            throw new EventException(QuibbleFEError.event_deleted(event_name));
+        }
+        if (tickets + num_tickets > MAX_TICKETS) {
+            throw new EventException(QuibbleFEError.return_tickets_error(event_name, num_tickets));
+        }
+        num_tickets += tickets;
     }
 
     /**
@@ -203,20 +218,14 @@ public class Event {
      * @throws EventException - when an illegal state is encountered
      */
     public void return_tickets(int tickets, Account current_user) throws EventException {
-        if (deleted) {
-            throw new EventException(QuibbleFEError.event_deleted(event_name));
-        }
-        if (tickets + num_tickets > MAX_TICKETS) {
-            throw new EventException(QuibbleFEError.return_tickets_error(event_name, num_tickets));
-        }
         if (!current_user.is_admin() && tickets > 8) {
             throw new EventException(QuibbleFEError.unprivileged_tickets(event_name, "return", current_user));
         }
-        num_tickets += tickets;
+        return_tickets(tickets);
     }
 
     /**
-     * Marks an event as deleted. If an event is already deleted, this method will throw an src.EventException.
+     * Marks an event as deleted. If an event is already deleted, this method will throw an EventException.
      *
      * @throws EventException - when an event has already been deleted
      */
@@ -251,10 +260,34 @@ public class Event {
     }
 
     /**
-     * Clones an src.Event object.
+     * Clones an Event object.
      * @return a cloned event object.
      */
     public Event clone() {
         return new Event(event_name, event_date, num_tickets);
+    }
+
+    @Override public int compareTo(Object other) {
+        Event other_event = (Event) other;
+        int d1 = Integer.parseInt(event_date);
+        int d2 = Integer.parseInt(other_event.get_event_date());
+        if(d1 < d2) {
+            return -1;
+        }
+        if (d1 == d2) {
+            return 0;
+        }
+        return 1;
+    }
+
+    public String to_master_event() {
+        return String.format("%6s", event_date).replace(" ", "0")
+                + " " + String.format("%5s", num_tickets).replace(" ", "0")
+                + " " + String.format("%-20s", event_name);
+    }
+
+    public String to_current_event() {
+        return String.format("%-20s", event_name)
+                + " " + String.format("%5s", num_tickets).replace(" ", "0");
     }
 }

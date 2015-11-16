@@ -1,9 +1,9 @@
-package src; /**
+/**
  * @author Dan Lawrence, Jerry Mak
  */
 
 /**
- * Public class that contains src.Account information for the front end, including:
+ * Public class that contains Account information for the front end, including:
  *     the current user
  *
  * Contains methods for logging in, logging out, and displaying the current user as a string.
@@ -13,7 +13,7 @@ public class Account {
     private String[] valid_users = {"admin", "sales"};
 
     /**
-     * Default constructor for src.Account class. Sets the username to empty, representing a "logged out" state.
+     * Default constructor for Account class. Sets the username to empty, representing a "logged out" state.
      */
     public Account() {
         username = "";
@@ -21,7 +21,7 @@ public class Account {
 
     /**
      * Method for logging into an account. Before setting the user, the method checks if the user is in the list of
-     * known users. If not, it will throw an src.AccountException.
+     * known users. If not, it will throw an AccountException.
      * @param user - the user to login
      * @throws AccountException - if the username is invalid
      */
@@ -34,7 +34,7 @@ public class Account {
 
     /**
      * Method for logging out of an account. Resets the username field to empty. If the account is already logged out,
-     * the method will throw an src.AccountException.
+     * the method will throw an AccountException.
      * @throws AccountException - when the account is already logged out
      */
     public void logout() throws AccountException {

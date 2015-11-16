@@ -1,4 +1,4 @@
-package src; /**
+/**
  * @author Dan Lawrence, Jerry Mak
  */
 
@@ -8,6 +8,7 @@ package src; /**
  */
 public class Main {
     public static void main(String[] args) {
+        /*
         QuibbleFE fe = null;
         if (args.length > 1) {
             System.err.println("Usage: Quibble [events-file]");
@@ -22,5 +23,9 @@ public class Main {
             fe = new QuibbleFE(args[0]);
         }
         fe.start();
+        */
+        QuibbleBE be = new QuibbleBE();
+        be.start();
     }
+
 }
