@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+# Jerry Mak, Dan Lawrence
+#
+# Script to simulate one day of Quibble.
+
+BACKEND=../backend/out/production/frontend
+FRONTEND=../frontend/out/production/frontend
+
