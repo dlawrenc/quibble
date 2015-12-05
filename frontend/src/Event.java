@@ -1,4 +1,4 @@
-package src; /**
+/**
  * @author Dan Lawrence, Jerry Mak
  */
 
@@ -14,7 +14,7 @@ package src; /**
  * tickets. Methods that relate to add, sell, and return command will throw EventExceptions upon trying to
  * modify an event with an illegal number of tickets.
  *
- * The constructors of this class do not throw EventExceptions. It is assumed that the src.QuibbleIO class will
+ * The constructors of this class do not throw EventExceptions. It is assumed that the QuibbleIO class will
  * get valid input before creating an instance of this class.
  */
 public class Event {
@@ -30,7 +30,7 @@ public class Event {
 
 
     /**
-     * Default constructor for the src.Event class. Initializes all attributes to empty/zero values.
+     * Default constructor for the Event class. Initializes all attributes to empty/zero values.
      */
     public Event() {
         event_name = "";
@@ -148,7 +148,7 @@ public class Event {
 
     /**
      * Adds tickets to an event. The event must be active and the number of tickets to add must not exceed
-     * the maximum number of tickets. Otherwise, this method will throw an src.EventException.
+     * the maximum number of tickets. Otherwise, this method will throw an EventException.
      *
      * @param tickets - the number of tickets to be added
      * @throws EventException - when the event is deleted or in an illegal state
@@ -173,7 +173,7 @@ public class Event {
      *     The sales account tries to sell more than 8 tickets
      *
      * @param tickets - the number of tickets to sell
-     * @param current_user - the current user as an src.Account object
+     * @param current_user - the current user as an Account object
      * @throws EventException - when an illegal state is encountered
      */
     public void sell_tickets(int tickets, Account current_user) throws EventException {
@@ -199,7 +199,7 @@ public class Event {
      *     The sales account tries to return more than 8 tickets
      *
      * @param tickets - the number of tickets to return
-     * @param current_user - the current user as an src.Account object
+     * @param current_user - the current user as an Account object
      * @throws EventException - when an illegal state is encountered
      */
     public void return_tickets(int tickets, Account current_user) throws EventException {
@@ -216,7 +216,7 @@ public class Event {
     }
 
     /**
-     * Marks an event as deleted. If an event is already deleted, this method will throw an src.EventException.
+     * Marks an event as deleted. If an event is already deleted, this method will throw an EventException.
      *
      * @throws EventException - when an event has already been deleted
      */
@@ -251,7 +251,7 @@ public class Event {
     }
 
     /**
-     * Clones an src.Event object.
+     * Clones an Event object.
      * @return a cloned event object.
      */
     public Event clone() {
