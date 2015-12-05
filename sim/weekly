@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Jerry Mak, Dan Lawrence
+#
+# Script to simulate 1 week of Quibble. Runs the daily script 5 times with pre defined inputs
+# from the inputs folder in this directory.
+#
+# Usage: weekly
+#
+# Exits with:
+#
+#     0 - if the simulation runs successfully without crashing
+#     1 - if either the backend or frontend crash during the simulation
+#     2 - if the script is run with incorrect parameters
+
+if [[ $# -ne 0 ]]; then
+    echo "Usage: weekly" >&2
+    exit 2
+fi
+
+i=0
+input_dir="$(dirname $0)/inputs"
+while (( i < 5 )); do
+    "$(dirname $0)/daily" $input_dir/DAY-$i-terminal-*
+
+    if [[ $? -ne 0 ]]; then
+        exit 1
+    fi
+
+    (( i++ ))
+done
