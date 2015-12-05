@@ -1,9 +1,93 @@
 #!/bin/bash
-#
+
 # Jerry Mak, Dan Lawrence
 #
-# Script to simulate one day of Quibble.
+# Script to simulate one day of Quibble. Accepts multiple input files, each of which
+# which should be the list of frontend commands to run in the simulation. Additionally provides an
+# interactive mode where a number of sessions can be run interactively.
+#
+#
+# Exits with:
+#     0 - if the simulation runs successfully without crashing
+#     1 - if either the backend or frontend crash during the simulation
+#     2 - if the script is run with incorrect parameters
 
 BACKEND=../backend/out/production/frontend
 FRONTEND=../frontend/out/production/frontend
 
+if [[ $# -lt 1 ]]; then
+    echo "Usage: daily FILE..." >&2
+    exit 2
+fi
+
+for ARG in $*; do
+    if [[ ! -f $ARG ]]; then
+        echo "Usage: daily FILE..." >&2
+        exit 2
+    fi
+done
+
+# find out how many days we have already run in the simulation and create a
+# new directory for the next day in the simulation
+days=DAY-*
+prev=0
+count=1
+for day in $days; do
+    if [[ -d $day ]]; then
+        (( prev++ ))
+        (( count++ ))
+    fi
+done
+
+echo "Simulating day $count of Quibble."
+mkdir "DAY-$count"
+
+# copy the previous current-events and master events to the new simulation day
+cp "DAY-$prev"/current-events "DAY-$count"
+cp "DAY-$prev"/master-events "DAY-$count"
+
+# copy the all the input files over to the simulation folder
+i=1
+for ARG in $*; do
+    cp "$ARG" "DAY-$count/fe-input$i"
+    (( i++ ))
+done
+
+# run the frontend for every terminal
+cd "DAY-$count"
+CLASSPATH="$FRONTEND"
+for file in fe-input*; do
+    java Main < $file &> fe-output
+
+    # if the frontend crashes, abort the simulation
+    if [[ $? -ne 0 ]]; then
+        echo "Simulation aborted: Quibble frontend exited with status $?" >&2
+        echo "Please see fe-output for details." >&2
+        exit 1
+    fi
+done
+
+# merge all the transactions created by the backend for the frontend
+for file in transaction-*; do
+    touch merged-transactions
+
+    # if the wildcard expands, then we have transactions to merge
+    if [[ -f $file ]]; then
+        cat transaction-* > merged-transactions
+    fi
+
+    # add empty transaction to the end of the file
+    echo -n "00                      000000 00000" >> merged-transactions
+    break
+done
+
+# run the backend
+CLASSPATH="$BACKEND"
+java Main &> be-output
+
+# if the backend crashes, abort the simulation
+if [[ $? -ne 0 ]]; then
+    echo "Simulation aborted: Quibble backend exited with status $?" >&2
+    echo "Please see be-output for details." >&2
+    exit 1
+fi
