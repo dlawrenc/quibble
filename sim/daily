@@ -12,8 +12,8 @@
 #     1 - if either the backend or frontend crash during the simulation
 #     2 - if the script is run with incorrect parameters
 
-BACKEND=../backend/out/production/frontend
-FRONTEND=../frontend/out/production/frontend
+BACKEND=../../backend/out/production/backend
+FRONTEND=../../frontend/out/production/frontend
 
 if [[ $# -lt 1 ]]; then
     echo "Usage: daily FILE..." >&2
@@ -30,21 +30,23 @@ done
 # find out how many days we have already run in the simulation and create a
 # new directory for the next day in the simulation
 days=DAY-*
-prev=0
 count=1
 for day in $days; do
     if [[ -d $day ]]; then
-        (( prev++ ))
         (( count++ ))
     fi
 done
+
+(( prev = count - 1 ))
 
 echo "Simulating day $count of Quibble."
 mkdir "DAY-$count"
 
 # copy the previous current-events and master events to the new simulation day
-cp "DAY-$prev"/current-events "DAY-$count"
-cp "DAY-$prev"/master-events "DAY-$count"
+if [[ $count -ne 1 ]]; then
+    cp "DAY-$prev"/current-events "DAY-$count"
+    cp "DAY-$prev"/master-events "DAY-$count"
+fi
 
 # copy the all the input files over to the simulation folder
 i=1
@@ -55,13 +57,14 @@ done
 
 # run the frontend for every terminal
 cd "DAY-$count"
-CLASSPATH="$FRONTEND"
+export CLASSPATH="$FRONTEND"
 for file in fe-input*; do
     java Main < $file &> fe-output
 
     # if the frontend crashes, abort the simulation
-    if [[ $? -ne 0 ]]; then
-        echo "Simulation aborted: Quibble frontend exited with status $?" >&2
+    status=$?
+    if [[ $status -ne 0 ]]; then
+        echo "Simulation aborted: Quibble frontend exited with status $status" >&2
         echo "Please see fe-output for details." >&2
         exit 1
     fi
@@ -77,17 +80,18 @@ for file in transaction-*; do
     fi
 
     # add empty transaction to the end of the file
-    echo -n "00                      000000 00000" >> merged-transactions
+    echo "00                      000000 00000" >> merged-transactions
     break
 done
 
 # run the backend
-CLASSPATH="$BACKEND"
+export CLASSPATH="$BACKEND"
 java Main &> be-output
 
 # if the backend crashes, abort the simulation
-if [[ $? -ne 0 ]]; then
-    echo "Simulation aborted: Quibble backend exited with status $?" >&2
+status=$?
+if [[ $status -ne 0 ]]; then
+    echo "Simulation aborted: Quibble backend exited with status $status" >&2
     echo "Please see be-output for details." >&2
     exit 1
 fi
