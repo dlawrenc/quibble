@@ -52,7 +52,7 @@ public class QuibbleFE {
         current_events = new ArrayList<>();
         transactions = new ArrayList<>();
         current_command = "";
-        session_num = 1;
+        session_num = qio.get_session_num();
     }
 
     /**
@@ -66,7 +66,7 @@ public class QuibbleFE {
         current_events = qio.read_events_file(events_file);
         transactions = new ArrayList<>();
         current_command = "";
-        session_num = 1;
+        session_num = qio.get_session_num();
     }
 
     /**

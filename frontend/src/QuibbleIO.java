@@ -209,4 +209,21 @@ public class QuibbleIO {
             System.exit(1);
         }
     }
+
+    /**
+     * gets the current session number based on the number of transaction files in the current working directory.
+     * @return the current session number
+     */
+    public int get_session_num() {
+        String prefix = "transaction-" + get_current_date();
+        File file;
+        int i = 1;
+        while (true) {
+            file = new File(prefix + "-" + i);
+            if (!file.exists()) {
+                return i;
+            }
+            i++;
+        }
+    }
 }
