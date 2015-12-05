@@ -12,8 +12,8 @@
 #     1 - if either the backend or frontend crash during the simulation
 #     2 - if the script is run with incorrect parameters
 
-BACKEND=../../backend/out/production/backend
-FRONTEND=../../frontend/out/production/frontend
+BACKEND="$(dirname $0)/../../backend/out/production/backend"
+FRONTEND="$(dirname $0)/../../frontend/out/production/frontend"
 
 if [[ $# -lt 1 ]]; then
     echo "Usage: daily FILE..." >&2

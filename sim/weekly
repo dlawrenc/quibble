@@ -3,7 +3,8 @@
 # Jerry Mak, Dan Lawrence
 #
 # Script to simulate 1 week of Quibble. Runs the daily script 5 times with pre defined inputs
-# from the inputs folder in this directory.
+# from a specified input folder. Expects to find tests in the form of input-X-terminal-Y, where
+# X is the input for the specific day in the week and Y is the session number of that day.
 #
 # Usage: weekly
 #
@@ -13,15 +14,14 @@
 #     1 - if either the backend or frontend crash during the simulation
 #     2 - if the script is run with incorrect parameters
 
-if [[ $# -ne 0 ]]; then
-    echo "Usage: weekly" >&2
+if [[ $# -ne 1 || ! -d $1 ]]; then
+    echo "Usage: weekly input_dir" >&2
     exit 2
 fi
 
-i=0
-input_dir="$(dirname $0)/inputs"
-while (( i < 5 )); do
-    "$(dirname $0)/daily" $input_dir/DAY-$i-terminal-*
+i=1
+while (( i < 6 )); do
+    "$(dirname $0)/daily" $1/input-$i-terminal-*
 
     if [[ $? -ne 0 ]]; then
         exit 1
