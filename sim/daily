@@ -58,8 +58,10 @@ done
 # run the frontend for every terminal
 cd "DAY-$count"
 export CLASSPATH="$FRONTEND"
+session=1;
 for file in fe-input*; do
-    java Main < $file &> fe-output
+    echo "========== session $session output =========" >> fe-output
+    java Main < $file &>> fe-output
 
     # if the frontend crashes, abort the simulation
     status=$?
@@ -68,6 +70,8 @@ for file in fe-input*; do
         echo "Please see fe-output for details." >&2
         exit 1
     fi
+    echo >> fe-output
+    (( session++ ))
 done
 
 # merge all the transactions created by the backend for the frontend
