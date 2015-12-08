@@ -173,7 +173,13 @@ public class QuibbleBE {
             events.add(event);
         }
 
-        Event found_event = events.get(events.indexOf(event));
+        int event_index = events.indexOf(event);
+        // the event must have been deleted by another terminal, just exit out of the method
+        if (event_index == -1) {
+            return;
+        }
+
+        Event found_event = events.get(event_index);
 
         // command is sell
         if (t_code == 1) {

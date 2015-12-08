@@ -3,8 +3,7 @@
 # Jerry Mak, Dan Lawrence
 #
 # Script to simulate one day of Quibble. Accepts multiple input files, each of which
-# which should be the list of frontend commands to run in the simulation. Additionally provides an
-# interactive mode where a number of sessions can be run interactively.
+# which should be the list of frontend commands to run in the simulation.
 #
 #
 # Exits with:

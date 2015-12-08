@@ -14,6 +14,8 @@ import java.lang.Comparable;
  * tickets. Input is assumed to be valid.
  */
 public class Event implements Comparable {
+    private final int MAX_TICKETS = 99999;
+    private final int MIN_TICKETS = 0;
     private String event_name;
     private String event_date;
     private int num_tickets;
@@ -46,7 +48,13 @@ public class Event implements Comparable {
      * @param tickets - the number of tickets to be added
      */
     public void add_tickets(int tickets) {
-        num_tickets += tickets;
+        // case where too many tickets have been returned from separate terminals
+        if (num_tickets + tickets > MAX_TICKETS) {
+            num_tickets = MAX_TICKETS;
+        }
+        else {
+            num_tickets += tickets;
+        }
     }
 
     /**
@@ -54,7 +62,13 @@ public class Event implements Comparable {
      * @param tickets
      */
     public void sell_tickets(int tickets) {
-        num_tickets -= tickets;
+        // case where too many tickets have been sold from separate terminals
+        if (num_tickets - tickets < MIN_TICKETS) {
+            num_tickets = MIN_TICKETS;
+        }
+        else {
+            num_tickets -= tickets;
+        }
     }
 
     /**
